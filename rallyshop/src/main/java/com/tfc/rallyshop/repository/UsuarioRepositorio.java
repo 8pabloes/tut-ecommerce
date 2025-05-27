@@ -8,4 +8,6 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
 
     // Comprobar si ya existe un correo registrado
     boolean existsByCorreo(String correo);
+    Usuario findByCorreo(String correo);
+
 }
