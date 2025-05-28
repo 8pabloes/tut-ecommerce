@@ -1,32 +1,49 @@
 package com.tfc.rallyshop.service;
 
 import com.tfc.rallyshop.entity.Favorito;
+import com.tfc.rallyshop.entity.Usuario;
+import com.tfc.rallyshop.entity.Coche;
 import com.tfc.rallyshop.repository.FavoritoRepositorio;
-import lombok.RequiredArgsConstructor;
+import com.tfc.rallyshop.repository.UsuarioRepositorio;
+
+import jakarta.transaction.Transactional;
+
+import com.tfc.rallyshop.repository.CocheRepositorio;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class FavoritoServicio {
 
-    private final FavoritoRepositorio repositorio;
+    private final FavoritoRepositorio repo;
+    private final UsuarioRepositorio usuarioRepo;
+    private final CocheRepositorio cocheRepo;
 
-    public List<Favorito> obtenerTodos() {
-        return repositorio.findAll();
+    public FavoritoServicio(FavoritoRepositorio repo, UsuarioRepositorio usuarioRepo, CocheRepositorio cocheRepo) {
+        this.repo = repo;
+        this.usuarioRepo = usuarioRepo;
+        this.cocheRepo = cocheRepo;
     }
 
-    public Optional<Favorito> obtenerPorId(Long id) {
-        return repositorio.findById(id);
+    public List<Favorito> obtenerFavoritos(Long usuarioId) {
+        return repo.findByUsuarioId(usuarioId);
     }
 
-    public Favorito guardar(Favorito favorito) {
-        return repositorio.save(favorito);
+    public boolean esFavorito(Long usuarioId, Long cocheId) {
+        return repo.findByUsuarioIdAndCocheId(usuarioId, cocheId).isPresent();
     }
 
-    public void eliminar(Long id) {
-        repositorio.deleteById(id);
+    public void añadirFavorito(Long usuarioId, Long cocheId) {
+        if (!esFavorito(usuarioId, cocheId)) {
+            Usuario usuario = usuarioRepo.findById(usuarioId).orElseThrow();
+            Coche coche = cocheRepo.findById(cocheId).orElseThrow();
+            Favorito f = new Favorito(null, usuario, coche);
+            repo.save(f);
+        }
+    }
+@Transactional
+    public void eliminarFavorito(Long usuarioId, Long cocheId) {
+        repo.deleteByUsuarioIdAndCocheId(usuarioId, cocheId);
     }
 }

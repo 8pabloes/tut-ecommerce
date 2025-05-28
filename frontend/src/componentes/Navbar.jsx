@@ -55,7 +55,7 @@ function Navbar() {
                     👋 Hola, {usuario.nombre}
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/favoritos">💖 Lista de deseos</Link>
+                    <Link className="nav-link" to="/favoritos">💖 Favoritos</Link>
                   </li>
                   <li className="nav-item">
                     <button onClick={cerrarSesion} className="btn btn-outline-light btn-sm">
