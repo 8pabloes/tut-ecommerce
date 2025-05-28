@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/coches")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CocheControlador {
 
     private final CocheServicio servicio;
@@ -20,7 +20,9 @@ public class CocheControlador {
 
     @GetMapping
     public List<Coche> listar() {
-        return servicio.obtenerTodos();
+        List<Coche> lista = servicio.obtenerTodos();
+        lista.forEach(c -> System.out.println(c.getMarca() + " - " + c.getImagen()));
+        return lista;
     }
 
     @GetMapping("/{id}")
@@ -43,6 +45,8 @@ public class CocheControlador {
                     c.setModelo(coche.getModelo());
                     c.setPrecio(coche.getPrecio());
                     c.setStock(coche.getStock());
+                    c.setImagen(coche.getImagen());
+                    c.setDescripcion(coche.getDescripcion());
                     return ResponseEntity.ok(servicio.guardar(c));
                 })
                 .orElse(ResponseEntity.notFound().build());

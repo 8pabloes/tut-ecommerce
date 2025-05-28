@@ -1,16 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Coches from "./paginas/Coches";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./componentes/Navbar";
+import Coches from "./paginas/Coches";
+import Login from "./paginas/Login";
+import Registro from "./paginas/Registro";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Navbar />
       <Routes>
         <Route path="/" element={<Coches />} />
-        {/* Puedes añadir más rutas aquí */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

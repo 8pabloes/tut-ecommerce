@@ -27,4 +27,10 @@ public class Coche {
 
     @Column(name = "stock", nullable = false)
     private int stock;
+
+    @Column(name = "imagen")
+    private String imagen;
+
+    @Column(name = "descripcion", length = 1000)
+    private String descripcion;
 }

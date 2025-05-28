@@ -1,19 +1,27 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import banner from "../assets/bannertut.png";
+import { useEffect, useState } from "react";
 import "./Navbar.css";
 
 function Navbar() {
-  // Simulamos sesión: false = no logueado, true = logueado
-  const [logueado, setLogueado] = useState(true);
-  const usuario = "Pablo"; // Este valor simulará el usuario logueado
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [usuario, setUsuario] = useState(null);
+
+  // Detectar usuario logueado desde localStorage
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("usuario"));
+    if (user && user.nombre) {
+      setUsuario(user);
+    } else {
+      setUsuario(null);
+    }
+  }, [location]);
 
   const cerrarSesion = () => {
-    setLogueado(false);
-  };
-
-  const iniciarSesion = () => {
-    setLogueado(true);
+    localStorage.removeItem("usuario");
+    setUsuario(null);
+    navigate("/login");
   };
 
   return (
@@ -42,32 +50,41 @@ function Navbar() {
 
           <div className="collapse navbar-collapse" id="menu">
             <ul className="navbar-nav ms-auto d-flex align-items-center gap-3">
-              {logueado ? (
+              {usuario ? (
                 <>
-                  <li className="nav-item text-light fw-bold">👋 Hola, {usuario}</li>
+                  <li className="nav-item text-light fw-bold">
+                    👋 Hola, {usuario.nombre}
+                  </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/favoritos">💖 Lista de deseos</Link>
                   </li>
                   <li className="nav-item">
-                    <button className="btn btn-warning btn-sm">Admin</button>
-                  </li>
-                  <li className="nav-item">
-                    <button onClick={cerrarSesion} className="btn btn-outline-light btn-sm">Cerrar sesión</button>
+                    <button onClick={cerrarSesion} className="btn btn-outline-light btn-sm">
+                      Cerrar sesión
+                    </button>
                   </li>
                 </>
               ) : (
-                <li className="nav-item">
-                  <button onClick={iniciarSesion} className="btn btn-primary btn-sm">Iniciar sesión</button>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link className="btn btn-primary btn-sm" to="/login">Iniciar sesión</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="btn btn-outline-light btn-sm" to="/registro">Registrarse</Link>
+                  </li>
+                </>
               )}
             </ul>
           </div>
         </div>
       </nav>
 
-      <div className="banner-container">
-        <img src={banner} alt="Banner rally" className="img-fluid banner" />
-      </div>
+      {/* Mostrar banner solo fuera de login y registro */}
+      {location.pathname !== "/login" && location.pathname !== "/registro" && (
+        <div className="banner-container">
+          <img src={banner} alt="Banner rally" className="img-fluid banner" />
+        </div>
+      )}
     </>
   );
 }

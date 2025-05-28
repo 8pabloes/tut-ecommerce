@@ -1,57 +1,95 @@
+// Coches.jsx actualizado - imagenes se leen de coche.imagen
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CocheCard from "../componentes/CocheCard";
 
 function Coches() {
   const [coches, setCoches] = useState([]);
-  const [nuevo, setNuevo] = useState({ marca: "", modelo: "", precio: "", stock: "" });
+  const [filtros, setFiltros] = useState({
+    marca: "",
+    modelo: "",
+    precioMin: "",
+    precioMax: "",
+  });
 
+ useEffect(() => {
   const cargar = async () => {
-    const res = await axios.get("http://localhost:8080/api/coches");
-    setCoches(res.data);
+    console.log("🔄 Cargando coches...");
+    try {
+      const res = await axios.get("http://localhost:8080/api/coches");
+      console.log("📦 Coches recibidos:", res.data);
+      setCoches(res.data);
+    } catch (err) {
+      console.error("❌ Error al cargar coches:", err);
+    }
   };
 
-  useEffect(() => {
-    cargar();
-  }, []);
+  cargar();
+}, []);
 
-  const crear = async (e) => {
-    e.preventDefault();
-    await axios.post("http://localhost:8080/api/coches", nuevo);
-    setNuevo({ marca: "", modelo: "", precio: "", stock: "" });
-    cargar();
-  };
 
-  const eliminar = async (id) => {
-    await axios.delete(`http://localhost:8080/api/coches/${id}`);
-    cargar();
+  const filtrar = coche => {
+    const { marca, modelo, precioMin, precioMax } = filtros;
+    const coincideMarca = coche.marca.toLowerCase().includes(marca.toLowerCase());
+    const coincideModelo = coche.modelo.toLowerCase().includes(modelo.toLowerCase());
+    const coincidePrecioMin = precioMin === "" || coche.precio >= parseFloat(precioMin);
+    const coincidePrecioMax = precioMax === "" || coche.precio <= parseFloat(precioMax);
+    return coincideMarca && coincideModelo && coincidePrecioMin && coincidePrecioMax;
   };
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4 text-primary">🏎️ Coches disponibles</h2>
-
-      <form onSubmit={crear} className="row g-3 mb-4">
+    <div className="container py-4">
+      <div className="row g-3 mb-4 align-items-end">
         <div className="col-md-3">
-          <input type="text" className="form-control" placeholder="Marca" value={nuevo.marca} onChange={e => setNuevo({ ...nuevo, marca: e.target.value })} required />
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Marca"
+            value={filtros.marca}
+            onChange={(e) => setFiltros({ ...filtros, marca: e.target.value })}
+          />
         </div>
         <div className="col-md-3">
-          <input type="text" className="form-control" placeholder="Modelo" value={nuevo.modelo} onChange={e => setNuevo({ ...nuevo, modelo: e.target.value })} required />
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Modelo"
+            value={filtros.modelo}
+            onChange={(e) => setFiltros({ ...filtros, modelo: e.target.value })}
+          />
         </div>
         <div className="col-md-2">
-          <input type="number" className="form-control" placeholder="Precio" value={nuevo.precio} onChange={e => setNuevo({ ...nuevo, precio: e.target.value })} required />
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Precio mín"
+            value={filtros.precioMin}
+            onChange={(e) => setFiltros({ ...filtros, precioMin: e.target.value })}
+          />
         </div>
         <div className="col-md-2">
-          <input type="number" className="form-control" placeholder="Stock" value={nuevo.stock} onChange={e => setNuevo({ ...nuevo, stock: e.target.value })} required />
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Precio máx"
+            value={filtros.precioMax}
+            onChange={(e) => setFiltros({ ...filtros, precioMax: e.target.value })}
+          />
         </div>
         <div className="col-md-2">
-          <button type="submit" className="btn btn-success w-100">Añadir</button>
+          <button className="btn btn-primary w-100">🔍 Buscar</button>
         </div>
-      </form>
+      </div>
 
       <div className="row">
-        {coches.map(coche => (
-          <CocheCard key={coche.id} coche={coche} onEliminar={eliminar} />
+        {coches.filter(filtrar).map(coche => (
+          <CocheCard
+            key={coche.id}
+            coche={coche}
+            onEliminar={() => {}}
+            onFavorito={() => {}}
+            onCarrito={() => {}}
+          />
         ))}
       </div>
     </div>

@@ -10,7 +10,8 @@ import java.util.List;
 // Controlador para gestionar peticiones relacionadas con usuarios
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:3000") // Para conectar con React en local
+@CrossOrigin(origins = "http://localhost:5173")
+ // Para conectar con React en local
 public class UsuarioControlador {
 
     private final UsuarioServicio servicio;

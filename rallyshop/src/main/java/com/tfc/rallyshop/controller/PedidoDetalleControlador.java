@@ -11,7 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pedido-detalles")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
+
 @RequiredArgsConstructor
 public class PedidoDetalleControlador {
 

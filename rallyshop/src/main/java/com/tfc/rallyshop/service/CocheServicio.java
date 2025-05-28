@@ -10,25 +10,25 @@ import java.util.Optional;
 @Service
 public class CocheServicio {
 
-    private final CocheRepositorio repositorio;
+    private final CocheRepositorio cocheRepositorio;
 
-    public CocheServicio(CocheRepositorio repositorio) {
-        this.repositorio = repositorio;
+    public CocheServicio(CocheRepositorio cocheRepositorio) {
+        this.cocheRepositorio = cocheRepositorio;
     }
 
     public List<Coche> obtenerTodos() {
-        return repositorio.findAll();
+        return cocheRepositorio.findAll();
     }
 
     public Optional<Coche> obtenerPorId(Long id) {
-        return repositorio.findById(id);
+        return cocheRepositorio.findById(id);
     }
 
     public Coche guardar(Coche coche) {
-        return repositorio.save(coche);
+        return cocheRepositorio.save(coche);
     }
 
     public void eliminar(Long id) {
-        repositorio.deleteById(id);
+        cocheRepositorio.deleteById(id);
     }
 }
