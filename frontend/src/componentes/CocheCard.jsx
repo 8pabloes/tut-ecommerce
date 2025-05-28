@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axiosConfig";
+
 import { toast } from "react-toastify";
 import "./CocheCard.css";
 
@@ -19,7 +20,7 @@ function CocheCard({ coche }) {
 
   const comprobarFavorito = async (usuarioId, cocheId) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/favoritos/existe/${usuarioId}/${cocheId}`);
+      const res = await api.get(`/favoritos/existe/${usuarioId}/${cocheId}`);
       setEsFavorito(res.data);
     } catch (err) {
       console.error("❌ Error al comprobar favorito:", err);
@@ -34,10 +35,10 @@ function CocheCard({ coche }) {
 
     try {
       if (esFavorito) {
-        await axios.delete(`http://localhost:8080/api/favoritos/${usuario.id}/${coche.id}`);
+        await api.delete(`/favoritos/${usuario.id}/${coche.id}`);
         toast.info("💔 Eliminado de favoritos");
       } else {
-        await axios.post(`http://localhost:8080/api/favoritos/${usuario.id}/${coche.id}`);
+        await api.post(`/favoritos/${usuario.id}/${coche.id}`);
         toast.success("💖 Añadido a favoritos");
       }
       setEsFavorito(!esFavorito);

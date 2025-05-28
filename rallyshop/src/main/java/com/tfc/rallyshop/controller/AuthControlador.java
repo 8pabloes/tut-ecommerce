@@ -1,9 +1,11 @@
 package com.tfc.rallyshop.controller;
 
+import com.tfc.rallyshop.dto.AuthRequest;
+import com.tfc.rallyshop.dto.AuthResponse;
 import com.tfc.rallyshop.entity.Usuario;
 import com.tfc.rallyshop.repository.UsuarioRepositorio;
+import com.tfc.rallyshop.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -19,31 +21,32 @@ public class AuthControlador {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Endpoint para registrar usuario
-   @PostMapping("/registro")
-public ResponseEntity<String> registrar(@RequestBody Usuario usuario) {
-    if (repositorio.existsByCorreo(usuario.getCorreo())) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Correo ya registrado");
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @PostMapping("/registro")
+    public ResponseEntity<?> registrar(@RequestBody AuthRequest request) {
+        if (repositorio.existsByCorreo(request.getCorreo())) {
+            return ResponseEntity.badRequest().body("Correo ya registrado");
+        }
+
+        Usuario nuevo = new Usuario();
+        nuevo.setNombre(request.getNombre());
+        nuevo.setCorreo(request.getCorreo());
+        nuevo.setContrasena(passwordEncoder.encode(request.getContrasena()));
+        repositorio.save(nuevo);
+
+        return ResponseEntity.ok("Usuario registrado");
     }
-    usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
-    repositorio.save(usuario);
-    return ResponseEntity.ok("Usuario registrado");
-}
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+        Usuario usuario = repositorio.findByCorreo(request.getCorreo());
+        if (usuario == null || !passwordEncoder.matches(request.getContrasena(), usuario.getContrasena())) {
+            return ResponseEntity.status(401).body("Credenciales inválidas");
+        }
 
-    // Endpoint para login
-@PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody Usuario datos) {
-    Usuario usuario = repositorio.findByCorreo(datos.getCorreo());
-    if (usuario == null) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario no encontrado");
+        String token = jwtUtil.generarToken(usuario.getCorreo());
+        return ResponseEntity.ok(new AuthResponse(token, usuario.getNombre(), usuario.getId()));
     }
-    if (passwordEncoder.matches(datos.getContrasena(), usuario.getContrasena())) {
-        return ResponseEntity.ok(usuario); // ✅ Devuelve el usuario completo
-    } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
-    }
-}
-
-
 }

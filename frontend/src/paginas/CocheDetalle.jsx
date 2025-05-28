@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axiosConfig";
+
+
 import "./CocheDetalle.css";
 
 function CocheDetalle() {
@@ -15,7 +17,7 @@ function CocheDetalle() {
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/coches/${id}`)
+    api.get(`/coches/${id}`)
       .then(res => setCoche(res.data))
       .catch(() => navigate("/"));
   }, [id, navigate]);

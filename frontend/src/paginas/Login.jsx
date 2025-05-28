@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/axiosConfig";
+
+
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -16,11 +18,13 @@ function Login() {
         contrasena,
       });
 
-      if (res.data && res.data.nombre) {
-        localStorage.setItem("usuario", JSON.stringify(res.data));
+      if (res.data && res.data.token) {
+        // Guardar el token y el usuario en localStorage
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
         navigate("/");
       } else {
-        setError(res.data);
+        setError("Credenciales inválidas");
       }
     } catch (err) {
       if (err.response) {

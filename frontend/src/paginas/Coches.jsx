@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axiosConfig";
+
+
 import CocheCard from "../componentes/CocheCard";
 import "./Coches.css";
 
@@ -15,7 +17,7 @@ function Coches() {
   useEffect(() => {
     const cargar = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/coches");
+        const res = await api.get("/coches");
         setCoches(res.data);
       } catch (err) {
         console.error("❌ Error al cargar coches:", err);

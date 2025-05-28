@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axiosConfig";
+
+
 import "./Coches.css";
 import { toast } from "react-toastify";
 
@@ -17,7 +19,7 @@ function Favoritos() {
 
   const cargarFavoritos = async (usuarioId) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/favoritos/${usuarioId}`);
+      const res = await api.get(`/favoritos/${usuarioId}`);
       const coches = res.data.map(f => f.coche);
       setFavoritos(coches);
     } catch (err) {
@@ -27,7 +29,7 @@ function Favoritos() {
 
   const quitarFavorito = async (cocheId) => {
     try {
-      await axios.delete(`http://localhost:8080/api/favoritos/${usuario.id}/${cocheId}`);
+      await api.delete(`/favoritos/${usuario.id}/${cocheId}`);
       toast.info("💔 Eliminado de favoritos");
       setFavoritos(prev => prev.filter(c => c.id !== cocheId));
     } catch (err) {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/axiosConfig";
+
 import { useNavigate } from "react-router-dom";
 
 function Registro() {
@@ -14,11 +15,11 @@ function Registro() {
   const enviar = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/registro", usuario);
+      const res = await api.post("/auth/registro", usuario);
       if (res.data === "Usuario registrado") {
         navigate("/login");
       } else {
-        setError(res.data); // ← muestra mensaje del backend
+        setError(res.data);
       }
     } catch (err) {
       if (err.response) {
@@ -52,7 +53,9 @@ function Registro() {
           placeholder="Contraseña"
           type="password"
           value={usuario.contrasena}
-          onChange={(e) => setUsuario({ ...usuario, contrasena: e.target.value })}
+          onChange={(e) =>
+            setUsuario({ ...usuario, contrasena: e.target.value })
+          }
           required
         />
         <button className="btn btn-success w-100">Registrarse</button>

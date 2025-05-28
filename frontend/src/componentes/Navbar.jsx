@@ -2,6 +2,9 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import banner from "../assets/bannertut.png";
 import { useEffect, useState } from "react";
 import "./Navbar.css";
+import api from "../api/axiosConfig";
+
+
 
 function Navbar() {
   const navigate = useNavigate();
