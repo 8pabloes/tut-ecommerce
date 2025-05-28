@@ -8,7 +8,6 @@ function Navbar() {
   const location = useLocation();
   const [usuario, setUsuario] = useState(null);
 
-  // Detectar usuario logueado desde localStorage
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("usuario"));
     if (user && user.nombre) {
@@ -79,10 +78,10 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Mostrar banner solo fuera de login y registro */}
-      {location.pathname !== "/login" && location.pathname !== "/registro" && (
+      {/* Mostrar banner solo en / */}
+      {location.pathname === "/" && (
         <div className="banner-container">
-          <img src={banner} alt="Banner rally" className="img-fluid banner" />
+          <img src={banner} alt="Banner rally" className="banner-img" />
         </div>
       )}
     </>

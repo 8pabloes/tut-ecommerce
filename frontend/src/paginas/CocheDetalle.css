@@ -1,0 +1,102 @@
+.detalle-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.detalle-izquierda {
+  flex: 1 1 500px;
+}
+
+.detalle-imagen {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.detalle-derecha {
+  flex: 1 1 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.detalle-precio {
+  font-size: 2rem;
+  color: #0d6efd;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.info-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.info-lista li {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.detalle-descripcion {
+  margin: 1rem 0;
+  color: #444;
+  line-height: 1.5;
+}
+
+.botones-detalle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-verde {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-verde:hover {
+  background-color: #218838;
+}
+
+.btn-rosa {
+  background-color: #ff4da6;
+  color: white;
+}
+
+.btn-rosa:hover {
+  background-color: #e60073;
+}
+
+.btn-gris {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.btn-gris:hover {
+  background-color: #ddd;
+}
+
+.mensaje-login {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #999;
+}

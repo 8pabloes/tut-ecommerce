@@ -4,6 +4,7 @@ import Navbar from "./componentes/Navbar";
 import Coches from "./paginas/Coches";
 import Login from "./paginas/Login";
 import Registro from "./paginas/Registro";
+import CocheDetalle from "./paginas/CocheDetalle";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Coches />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/coches/:id" element={<CocheDetalle />} />
         <Route path="/registro" element={<Registro />} />
       </Routes>
     </Router>

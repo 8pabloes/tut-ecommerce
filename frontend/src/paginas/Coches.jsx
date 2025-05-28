@@ -26,18 +26,20 @@ function Coches() {
 
   const filtrar = (coche) => {
     const { marca, modelo, precioMin, precioMax } = filtros;
-    return (
-      coche.marca.toLowerCase().includes(marca.toLowerCase()) &&
-      coche.modelo.toLowerCase().includes(modelo.toLowerCase()) &&
-      (precioMin === "" || coche.precio >= parseFloat(precioMin)) &&
-      (precioMax === "" || coche.precio <= parseFloat(precioMax))
-    );
+    const marcaOk = coche.marca.toLowerCase().includes(marca.toLowerCase());
+    const modeloOk = coche.modelo.toLowerCase().includes(modelo.toLowerCase());
+    const minOk = precioMin === "" || coche.precio >= parseFloat(precioMin);
+    const maxOk = precioMax === "" || coche.precio <= parseFloat(precioMax);
+    return marcaOk && modeloOk && minOk && maxOk;
   };
+
+  const manejarSubmit = (e) => e.preventDefault();
+
+  const cochesFiltrados = coches.filter(filtrar);
 
   return (
     <div className="catalogo-container">
-
-      <div className="filtros">
+      <form className="filtros" onSubmit={manejarSubmit}>
         <input
           type="text"
           placeholder="Marca"
@@ -62,15 +64,19 @@ function Coches() {
           value={filtros.precioMax}
           onChange={(e) => setFiltros({ ...filtros, precioMax: e.target.value })}
         />
-        <button className="btn-filtrar">🔍 Buscar</button>
-      </div>
+        <button type="submit" className="btn-filtrar">🔍 Buscar</button>
+      </form>
 
-      <div className="row">
-        {coches.filter(filtrar).map((coche) => (
-          <div className="col-md-4 mb-4" key={coche.id}>
-            <CocheCard coche={coche} />
-          </div>
-        ))}
+      <div className="row justify-content-center min-altura">
+        {cochesFiltrados.length > 0 ? (
+          cochesFiltrados.map((coche) => (
+            <div className="col-md-4 mb-4" key={coche.id}>
+              <CocheCard coche={coche} />
+            </div>
+          ))
+        ) : (
+          <p className="texto-vacio">🚫 No hay coches que coincidan con los filtros.</p>
+        )}
       </div>
     </div>
   );
