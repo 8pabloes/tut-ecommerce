@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
+
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -40,13 +42,22 @@ public class AuthControlador {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        Usuario usuario = repositorio.findByCorreo(request.getCorreo());
-        if (usuario == null || !passwordEncoder.matches(request.getContrasena(), usuario.getContrasena())) {
-            return ResponseEntity.status(401).body("Credenciales inválidas");
-        }
+public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+    Optional<Usuario> usuarioOpt = repositorio.findByCorreo(request.getCorreo());
 
-        String token = jwtUtil.generarToken(usuario.getCorreo());
-        return ResponseEntity.ok(new AuthResponse(token, usuario.getNombre(), usuario.getId()));
+    if (usuarioOpt.isEmpty()) {
+        return ResponseEntity.status(401).body("Credenciales inválidas");
     }
+
+    Usuario usuario = usuarioOpt.get();
+
+    if (!passwordEncoder.matches(request.getContrasena(), usuario.getContrasena())) {
+        return ResponseEntity.status(401).body("Credenciales inválidas");
+    }
+
+    String token = jwtUtil.generarToken(usuario.getCorreo());
+
+    return ResponseEntity.ok(new AuthResponse(token, usuario.getNombre(), usuario.getId()));
+}
+
 }

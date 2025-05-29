@@ -5,6 +5,8 @@ import com.tfc.rallyshop.repository.UsuarioRepositorio;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -16,15 +18,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepositorio.findByCorreo(correo);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
-        }
+        Usuario usuario = usuarioRepositorio.findByCorreo(correo)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        return User.builder()
-                .username(usuario.getCorreo())
-                .password(usuario.getContrasena())
-                .roles("USER")
-                .build();
+        return new org.springframework.security.core.userdetails.User(
+                usuario.getCorreo(),
+                usuario.getContrasena(),
+                Collections.emptyList()
+        );
     }
 }

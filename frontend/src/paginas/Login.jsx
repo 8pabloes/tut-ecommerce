@@ -3,8 +3,8 @@ import api from "../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -12,13 +12,16 @@ function Login() {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", {
-        email,
-        password,
+        correo,
+        contrasena,
       });
 
       if (res.data && res.data.token) {
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+        localStorage.setItem("usuario", JSON.stringify({
+          id: res.data.id,
+          nombre: res.data.nombre
+        }));
         navigate("/");
       } else {
         setError("Credenciales inválidas");
@@ -39,16 +42,16 @@ function Login() {
         <input
           className="form-control mb-2"
           placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
           required
         />
         <input
           className="form-control mb-2"
           placeholder="Contraseña"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
           required
         />
         <button className="btn btn-primary w-100">Entrar</button>

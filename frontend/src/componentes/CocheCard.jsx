@@ -10,16 +10,11 @@ function CocheCard({ coche }) {
   const [esFavorito, setEsFavorito] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("usuario");
-      if (!raw || raw === "undefined") return;
-      const user = JSON.parse(raw);
-      if (user) {
-        setUsuario(user);
-        comprobarFavorito(user.id, coche.id);
-      }
-    } catch (e) {
-      setUsuario(null);
+    const userString = localStorage.getItem("usuario");
+    if (userString) {
+      const user = JSON.parse(userString);
+      setUsuario(user);
+      comprobarFavorito(user.id, coche.id);
     }
   }, [coche.id]);
 
@@ -34,6 +29,7 @@ function CocheCard({ coche }) {
 
   const toggleFavorito = async () => {
     if (!usuario) {
+      toast.info("🔒 Debes iniciar sesión");
       navigate("/login");
       return;
     }
@@ -41,30 +37,49 @@ function CocheCard({ coche }) {
     try {
       if (esFavorito) {
         await api.delete(`/favoritos/${usuario.id}/${coche.id}`);
-        toast.info("❌ Eliminado de favoritos");
+        toast.info("💔 Eliminado de favoritos");
       } else {
-        await api.post("/favoritos", {
-          usuarioId: usuario.id,
-          cocheId: coche.id,
-        });
-        toast.success("❤️ Añadido a favoritos");
+        await api.post(`/favoritos/${usuario.id}/${coche.id}`);
+        toast.success("💖 Añadido a favoritos");
       }
       setEsFavorito(!esFavorito);
     } catch (err) {
       console.error("❌ Error al actualizar favorito:", err);
+      toast.error("❌ Error al actualizar favoritos");
     }
   };
 
+  const irADetalle = () => {
+    navigate(`/coches/${coche.id}`);
+  };
+
   return (
-    <div className="card coche-card shadow">
-      <img src={`/coches/${coche.imagen}`} className="card-img-top" alt={coche.modelo} />
-      <div className="card-body">
-        <h5 className="card-title">{coche.marca} {coche.modelo}</h5>
-        <p className="card-text">{coche.descripcion}</p>
-        <p className="card-text fw-bold">{coche.precio} €</p>
-        <button className="btn btn-outline-danger" onClick={toggleFavorito}>
-          {esFavorito ? "💔 Quitar favorito" : "❤️ Añadir a favoritos"}
+    <div className="car-card">
+      <div className="car-img-container">
+        <img
+          src={`/coches/${coche.imagen}`}
+          alt={coche.modelo}
+          className="car-img"
+        />
+        <button
+          className={`car-fav ${esFavorito ? "activo" : ""}`}
+          onClick={toggleFavorito}
+          title="Añadir a favoritos"
+        >
+          ❤
         </button>
+      </div>
+      <div className="car-details">
+        <h3 className="car-title">
+          {coche.marca} {coche.modelo}
+        </h3>
+        <p className="car-description">{coche.descripcion}</p>
+        <div className="car-bottom">
+          <span className="car-price">{coche.precio.toLocaleString()} €</span>
+          <button className="car-btn" onClick={irADetalle}>
+            Ver más
+          </button>
+        </div>
       </div>
     </div>
   );

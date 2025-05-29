@@ -4,26 +4,18 @@ import { useEffect, useState } from "react";
 import "./Navbar.css";
 import api from "../api/axiosConfig";
 
+
+
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("usuario");
-      if (!raw || raw === "undefined") {
-        setUsuario(null);
-        return;
-      }
-      const user = JSON.parse(raw);
-      if (user?.nombre) {
-        setUsuario(user);
-      } else {
-        setUsuario(null);
-      }
-    } catch (e) {
-      console.error("❌ Error leyendo usuario desde localStorage:", e);
+    const user = JSON.parse(localStorage.getItem("usuario"));
+    if (user && user.nombre) {
+      setUsuario(user);
+    } else {
       setUsuario(null);
     }
   }, [location]);
@@ -39,7 +31,13 @@ function Navbar() {
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm px-4">
         <div className="container-fluid">
           <Link className="navbar-brand d-flex align-items-center" to="/">
-            <img src="/favicon.ico" alt="logo" width="30" height="30" className="me-2" />
+            <img
+              src="/favicon.ico"
+              alt="logo"
+              width="30"
+              height="30"
+              className="me-2"
+            />
             <span className="fw-bold fs-5">TUT - The Uxes Track</span>
           </Link>
 
@@ -83,6 +81,7 @@ function Navbar() {
         </div>
       </nav>
 
+      {/* Mostrar banner solo en / */}
       {location.pathname === "/" && (
         <div className="banner-container">
           <img src={banner} alt="Banner rally" className="banner-img" />
