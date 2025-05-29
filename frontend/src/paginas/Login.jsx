@@ -1,25 +1,22 @@
 import React, { useState } from "react";
 import api from "../api/axiosConfig";
-
-
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [correo, setCorreo] = useState("");
-  const [contrasena, setContrasena] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const enviar = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/login", {
-        correo,
-        contrasena,
+      const res = await api.post("/auth/login", {
+        email,
+        password,
       });
 
       if (res.data && res.data.token) {
-        // Guardar el token y el usuario en localStorage
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
         navigate("/");
@@ -27,7 +24,7 @@ function Login() {
         setError("Credenciales inválidas");
       }
     } catch (err) {
-      if (err.response) {
+      if (err.response?.data) {
         setError(err.response.data);
       } else {
         setError("Error al conectar con el servidor");
@@ -41,17 +38,17 @@ function Login() {
       <form onSubmit={enviar}>
         <input
           className="form-control mb-2"
-          placeholder="Correo"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input
           className="form-control mb-2"
           placeholder="Contraseña"
           type="password"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
         <button className="btn btn-primary w-100">Entrar</button>
