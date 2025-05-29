@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axiosConfig";
-
+import { useCarrito } from "../context/CarritoContext";
 
 import "./CocheDetalle.css";
+
 
 function CocheDetalle() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [coche, setCoche] = useState(null);
   const [usuario, setUsuario] = useState(null);
+  const { añadirAlCarrito } = useCarrito();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("usuario"));
@@ -44,17 +46,18 @@ function CocheDetalle() {
 
         {usuario ? (
           <div className="botones-detalle">
-            <button className="btn btn-verde" onClick={() => alert("🛒 Añadido al carrito")}>
-              🛒 Comprar ahora
-            </button>
+            <button
+  className="btn btn-verde"
+  onClick={() => {
+    añadirAlCarrito(coche);
+    alert("🛒 Añadido a la cesta");
+  }}
+>
+  🛒 Comprar ahora
+</button>
             <button className="btn btn-gris" onClick={() => alert("💖 Añadido a favoritos")}>
               ❤️ Añadir a favoritos
             </button>
-            {coche.stock === 0 && (
-              <button className="btn btn-rosa" onClick={() => alert("➕ Añadido a lista de deseos")}>
-                ➕ Añadir a lista de deseos
-              </button>
-            )}
           </div>
         ) : (
           <p className="mensaje-login">🔒 Inicia sesión para comprar o guardar este coche.</p>

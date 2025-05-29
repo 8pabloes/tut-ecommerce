@@ -60,6 +60,10 @@ function Navbar() {
                     <Link className="nav-link" to="/favoritos">💖 Favoritos</Link>
                   </li>
                   <li className="nav-item">
+  <Link className="nav-link" to="/carrito">🛒 Cesta</Link>
+</li>
+
+                  <li className="nav-item">
                     <button onClick={cerrarSesion} className="btn btn-outline-light btn-sm">
                       Cerrar sesión
                     </button>

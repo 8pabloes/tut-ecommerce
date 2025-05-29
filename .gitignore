@@ -1,13 +1,16 @@
-# Backend 
-/rallyshop/target/ 
-/rallyshop/.idea/ 
-/rallyshop/.mvn/ 
-/rallyshop/.settings/ 
-/rallyshop/.classpath 
-/rallyshop/.project 
-# Frontend 
-/frontend/node_modules/ 
-/frontend/.env 
-# General 
-.DS_Store 
-*.log 
+# Backend
+/rallyshop/target/
+rallyshop/.env
+/rallyshop/.idea/
+rallyshop/.mvn/
+rallyshop/.settings/
+rallyshop/.classpath
+rallyshop/.project
+
+# Frontend
+/frontend/node_modules/
+frontend/.env
+
+# General
+.DS_Store
+*.log
