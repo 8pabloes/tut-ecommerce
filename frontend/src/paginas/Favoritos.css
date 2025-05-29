@@ -5,24 +5,62 @@
 
 .favoritos-container h2 {
   margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
 }
 
 .car-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   overflow: hidden;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.car-img-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.car-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.car-details {
   padding: 1rem;
 }
 
-.car-img-container img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+.car-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.car-description {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.car-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .car-price {
   font-weight: bold;
   color: #2c3e50;
+}
+
+.texto-vacio {
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 2rem;
 }

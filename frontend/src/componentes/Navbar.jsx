@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import "./Navbar.css";
 import api from "../api/axiosConfig";
 
-
-
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,15 +29,16 @@ function Navbar() {
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm px-4">
         <div className="container-fluid">
           <Link className="navbar-brand d-flex align-items-center" to="/">
-            <img
-              src="/favicon.ico"
-              alt="logo"
-              width="30"
-              height="30"
-              className="me-2"
-            />
-            <span className="fw-bold fs-5">TUT - The Uxes Track</span>
-          </Link>
+  <img
+    src="/logo.png"
+    alt="Logo TUT"
+    width="36"
+    height="36"
+    className="me-2"
+  />
+  <span className="fw-bold fs-5">TUT - The Uxes Track</span>
+</Link>
+
 
           <button
             className="navbar-toggler"
