@@ -2,6 +2,9 @@ package com.tfc.rallyshop.controller;
 
 import com.tfc.rallyshop.entity.Coche;
 import com.tfc.rallyshop.service.CocheServicio;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,15 @@ public class CocheControlador {
         List<Coche> lista = servicio.obtenerTodos();
         lista.forEach(c -> System.out.println(c.getMarca() + " - " + c.getImagen()));
         return lista;
+    }
+
+    @GetMapping("/pagina")
+    public Page<Coche> obtenerPaginados(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return servicio.obtenerPaginados(pageable);
     }
 
     @GetMapping("/{id}")

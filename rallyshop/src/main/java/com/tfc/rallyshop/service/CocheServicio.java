@@ -2,6 +2,8 @@ package com.tfc.rallyshop.service;
 
 import com.tfc.rallyshop.entity.Coche;
 import com.tfc.rallyshop.repository.CocheRepositorio;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +32,10 @@ public class CocheServicio {
 
     public void eliminar(Long id) {
         cocheRepositorio.deleteById(id);
+    }
+
+    // 🆕 Nuevo método para paginación
+    public Page<Coche> obtenerPaginados(Pageable pageable) {
+        return cocheRepositorio.findAll(pageable);
     }
 }

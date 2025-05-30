@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axiosConfig";
-
-
 import CocheCard from "../componentes/CocheCard";
 import "./Coches.css";
 
 function Coches() {
   const [coches, setCoches] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [filtros, setFiltros] = useState({
     marca: "",
     modelo: "",
@@ -15,16 +15,20 @@ function Coches() {
   });
 
   useEffect(() => {
-    const cargar = async () => {
-      try {
-        const res = await api.get("/coches");
-        setCoches(res.data);
-      } catch (err) {
-        console.error("❌ Error al cargar coches:", err);
-      }
-    };
-    cargar();
-  }, []);
+    cargarCoches();
+  }, [page]);
+
+  const cargarCoches = async () => {
+    try {
+      const res = await api.get(`/coches/pagina?page=${page}&size=6`);
+      setCoches(res.data.content);
+      setTotalPages(res.data.totalPages);
+    } catch (err) {
+      console.error("❌ Error al cargar coches:", err);
+    }
+  };
+
+  const manejarSubmit = (e) => e.preventDefault();
 
   const filtrar = (coche) => {
     const { marca, modelo, precioMin, precioMax } = filtros;
@@ -35,9 +39,13 @@ function Coches() {
     return marcaOk && modeloOk && minOk && maxOk;
   };
 
-  const manejarSubmit = (e) => e.preventDefault();
-
   const cochesFiltrados = coches.filter(filtrar);
+
+  const irPagina = (nuevaPagina) => {
+    if (nuevaPagina >= 0 && nuevaPagina < totalPages) {
+      setPage(nuevaPagina);
+    }
+  };
 
   return (
     <div className="catalogo-container">
@@ -79,6 +87,24 @@ function Coches() {
         ) : (
           <p className="texto-vacio">🚫 No hay coches que coincidan con los filtros.</p>
         )}
+      </div>
+
+      <div className="d-flex justify-content-center mt-4 paginacion">
+        <button
+          className="btn btn-outline-primary me-2"
+          onClick={() => irPagina(page - 1)}
+          disabled={page === 0}
+        >
+          ← Anterior
+        </button>
+        <span className="align-self-center">Página {page + 1} de {totalPages}</span>
+        <button
+          className="btn btn-outline-primary ms-2"
+          onClick={() => irPagina(page + 1)}
+          disabled={page + 1 >= totalPages}
+        >
+          Siguiente →
+        </button>
       </div>
     </div>
   );
