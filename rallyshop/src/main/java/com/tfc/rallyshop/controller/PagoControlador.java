@@ -34,6 +34,10 @@ public class PagoControlador {
         for (Long id : ids) {
             Coche coche = cocheRepo.findById(id).orElseThrow();
 
+            if (coche.getStock() <= 0) {
+                throw new RuntimeException("El coche " + coche.getMarca() + " " + coche.getModelo() + " no tiene stock.");
+            }
+
             builder.addLineItem(
                 SessionCreateParams.LineItem.builder()
                     .setQuantity(1L)
@@ -50,6 +54,10 @@ public class PagoControlador {
                     )
                     .build()
             );
+
+            // 💥 Descontar stock antes de crear la sesión
+            coche.setStock(coche.getStock() - 1);
+            cocheRepo.save(coche);
         }
 
         Session session = Session.create(builder.build());
