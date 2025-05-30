@@ -1,14 +1,18 @@
 package com.tfc.rallyshop.config;
 
 import com.stripe.Stripe;
-import org.springframework.context.annotation.Configuration;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class StripeConfig {
 
+    @Value("${stripe.secret.key}")
+    private String stripeSecretKey;
+
     @PostConstruct
-    public void init() {
-       Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY");
-}
+    public void setup() {
+        Stripe.apiKey = stripeSecretKey;
+    }
 }

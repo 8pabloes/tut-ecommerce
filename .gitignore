@@ -6,6 +6,7 @@ rallyshop/.mvn/
 rallyshop/.settings/
 rallyshop/.classpath
 rallyshop/.project
+/src/main/resources/application-secrets.properties
 
 # Frontend
 /frontend/node_modules/

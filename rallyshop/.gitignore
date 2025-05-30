@@ -6,6 +6,8 @@ target/
 /rallyshop/target/
 rallyshop/.env
 /rallyshop/.idea/
+/src/main/resources/application-secrets.properties
+
 ### STS ###
 .apt_generated
 .classpath
