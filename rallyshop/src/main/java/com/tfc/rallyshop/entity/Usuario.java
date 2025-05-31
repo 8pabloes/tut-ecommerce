@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-// Clase que representa la tabla 'usuarios'
 @Entity
 @Table(name = "usuarios")
 @Getter
@@ -15,21 +14,19 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Usuario {
 
-    // Identificador del usuario (clave primaria autoincremental)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    // Nombre del usuario
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    // Correo electrónico único
-    @Column(name = "correo", nullable = false, unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
-    // Contraseña del usuario
-    @Column(name = "contrasena", nullable = false)
+    @Column(nullable = false)
     private String contrasena;
+
+    @Column(nullable = false, length = 20)
+    private String rol = "user";  // 👈 por defecto será 'user', pero puedes ponerle 'admin' en la base de datos
 }

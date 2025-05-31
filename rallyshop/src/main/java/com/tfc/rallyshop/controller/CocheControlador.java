@@ -7,7 +7,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -23,9 +28,7 @@ public class CocheControlador {
 
     @GetMapping
     public List<Coche> listar() {
-        List<Coche> lista = servicio.obtenerTodos();
-        lista.forEach(c -> System.out.println(c.getMarca() + " - " + c.getImagen()));
-        return lista;
+        return servicio.obtenerTodos();
     }
 
     @GetMapping("/pagina")
@@ -45,24 +48,88 @@ public class CocheControlador {
     }
 
     @PostMapping
-    public Coche crear(@RequestBody Coche coche) {
-        return servicio.guardar(coche);
+    public ResponseEntity<Coche> crear(
+            @RequestPart("marca") String marca,
+            @RequestPart("modelo") String modelo,
+            @RequestPart("precio") Double precio,
+            @RequestPart("stock") Integer stock,
+            @RequestPart("anio") Integer anio,
+            @RequestPart("km") Integer km,
+            @RequestPart("descripcion") String descripcion,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen
+    ) {
+        Coche coche = new Coche();
+        coche.setMarca(marca);
+        coche.setModelo(modelo);
+        coche.setPrecio(precio);
+        coche.setStock(stock);
+        coche.setAnio(anio);
+        coche.setKm(km);
+        coche.setDescripcion(descripcion);
+
+        if (imagen != null && !imagen.isEmpty()) {
+            if (!imagen.getOriginalFilename().toLowerCase().endsWith(".jpg")) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            try {
+                String nombreArchivo = System.currentTimeMillis() + ".jpg";
+                Path ruta = Paths.get("uploads").resolve(nombreArchivo);
+                Files.createDirectories(ruta.getParent());
+                imagen.transferTo(ruta.toFile());
+                coche.setImagen(nombreArchivo);
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().build();
+            }
+        }
+
+        return ResponseEntity.ok(servicio.guardar(coche));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Coche> actualizar(@PathVariable Long id, @RequestBody Coche coche) {
-        return servicio.obtenerPorId(id)
-                .map(c -> {
-                    c.setMarca(coche.getMarca());
-                    c.setModelo(coche.getModelo());
-                    c.setPrecio(coche.getPrecio());
-                    c.setStock(coche.getStock());
-                    c.setImagen(coche.getImagen());
-                    c.setDescripcion(coche.getDescripcion());
-                    return ResponseEntity.ok(servicio.guardar(c));
-                })
-                .orElse(ResponseEntity.notFound().build());
+@PutMapping("/{id}")
+public ResponseEntity<Coche> actualizar(
+        @PathVariable Long id,
+        @RequestPart("marca") String marca,
+        @RequestPart("modelo") String modelo,
+        @RequestPart("precio") Double precio,
+        @RequestPart("stock") Integer stock,
+        @RequestPart("anio") Integer anio,
+        @RequestPart("km") Integer km,
+        @RequestPart("descripcion") String descripcion,
+        @RequestPart(value = "imagen", required = false) MultipartFile imagen
+) {
+    if (!servicio.obtenerPorId(id).isPresent()) {
+        return ResponseEntity.notFound().build();
     }
+
+    Coche coche = servicio.obtenerPorId(id).get();
+    coche.setMarca(marca);
+    coche.setModelo(modelo);
+    coche.setPrecio(precio);
+    coche.setStock(stock);
+    coche.setAnio(anio);
+    coche.setKm(km);
+    coche.setDescripcion(descripcion);
+
+    if (imagen != null && !imagen.isEmpty()) {
+        if (!imagen.getOriginalFilename().toLowerCase().endsWith(".jpg")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        try {
+            String nombreArchivo = System.currentTimeMillis() + ".jpg";
+            Path ruta = Paths.get("uploads").resolve(nombreArchivo);
+            Files.createDirectories(ruta.getParent());
+            imagen.transferTo(ruta.toFile());
+            coche.setImagen(nombreArchivo);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    return ResponseEntity.ok(servicio.guardar(coche));
+}
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {

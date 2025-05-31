@@ -34,9 +34,10 @@ public class Coche {
     @Column(name = "descripcion", length = 1000)
     private String descripcion;
 
-    @Column(name = "anio", nullable = false)
-    private int anio;
+@Column(name = "anio", nullable = false)
+private int anio;
 
-    @Column(name = "km", nullable = false)
-    private int km;
+@Column(name = "km", nullable = false)
+private int km;
+
 }

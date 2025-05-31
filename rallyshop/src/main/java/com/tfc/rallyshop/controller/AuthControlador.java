@@ -57,7 +57,8 @@ public ResponseEntity<?> login(@RequestBody AuthRequest request) {
 
     String token = jwtUtil.generarToken(usuario.getCorreo());
 
-    return ResponseEntity.ok(new AuthResponse(token, usuario.getNombre(), usuario.getId()));
+    return ResponseEntity.ok(new AuthResponse(token, usuario.getNombre(), usuario.getId(), usuario.getRol()));
+
 }
 
 }

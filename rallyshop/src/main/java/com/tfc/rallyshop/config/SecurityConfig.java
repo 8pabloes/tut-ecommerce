@@ -2,7 +2,6 @@ package com.tfc.rallyshop.config;
 
 import com.tfc.rallyshop.security.JwtAuthenticationEntryPoint;
 import com.tfc.rallyshop.security.JwtAuthenticationFilter;
-import com.tfc.rallyshop.security.JwtFilter;
 import com.tfc.rallyshop.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,21 +18,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtEntryPoint;
-    private final UserDetailsServiceImpl userDetailsService;
 
-    public SecurityConfig(JwtFilter jwtFilter, JwtAuthenticationEntryPoint jwtEntryPoint, UserDetailsServiceImpl userDetailsService) {
-        this.jwtFilter = jwtFilter;
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          JwtAuthenticationEntryPoint jwtEntryPoint) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtEntryPoint = jwtEntryPoint;
-        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -49,7 +48,7 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

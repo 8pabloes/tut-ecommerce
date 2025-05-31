@@ -22,6 +22,7 @@ function Login() {
           id: res.data.id,
           nombre: res.data.nombre
         }));
+        localStorage.setItem("rol", res.data.rol);
         navigate("/");
       } else {
         setError("Credenciales inválidas");
