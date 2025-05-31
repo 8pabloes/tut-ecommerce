@@ -1,60 +1,62 @@
+// src/paginas/NuevoCoche.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axiosConfig";
 
 function NuevoCoche() {
-  const [datos, setDatos] = useState({
+  const navigate = useNavigate();
+  const [nuevoCoche, setNuevoCoche] = useState({
     marca: "",
     modelo: "",
     precio: "",
+    descripcion: "",
     stock: "",
-    descripcion: ""
+    anio: "",
+    km: ""
   });
-  const [imagen, setImagen] = useState(null);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setDatos({ ...datos, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setImagen(e.target.files[0]);
+    setNuevoCoche({ ...nuevoCoche, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!imagen) {
-      alert("Por favor selecciona una imagen");
-      return;
-    }
-
-    const formData = new FormData();
-    Object.keys(datos).forEach((key) => formData.append(key, datos[key]));
-    formData.append("imagen", imagen);
-
     try {
-      await api.post("/coches", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await api.post("/coches", nuevoCoche);
       navigate("/admin");
     } catch (err) {
-      console.error("❌ Error al crear coche", err);
-      alert("Hubo un error al crear el coche");
+      console.error("❌ Error al crear coche:", err);
     }
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "600px" }}>
-      <h3>➕ Nuevo coche</h3>
+    <div className="container mt-4">
+      <h2>Nuevo Coche</h2>
       <form onSubmit={handleSubmit}>
-        <input className="form-control mb-2" name="marca" placeholder="Marca" onChange={handleChange} required />
-        <input className="form-control mb-2" name="modelo" placeholder="Modelo" onChange={handleChange} required />
-        <input className="form-control mb-2" name="precio" type="number" placeholder="Precio (€)" onChange={handleChange} required />
-        <input className="form-control mb-2" name="stock" type="number" placeholder="Stock" onChange={handleChange} required />
-        <textarea className="form-control mb-2" name="descripcion" placeholder="Descripción" onChange={handleChange} rows={4} />
-        <input className="form-control mb-3" type="file" accept="image/*" onChange={handleFileChange} required />
-        <button className="btn btn-success w-100" type="submit">Crear coche</button>
+        {["marca", "modelo", "precio", "stock", "anio", "km", "descripcion"].map((campo) => (
+          <div className="mb-3" key={campo}>
+            <label className="form-label">{campo.charAt(0).toUpperCase() + campo.slice(1)}</label>
+            {campo === "descripcion" ? (
+              <textarea
+                name={campo}
+                value={nuevoCoche[campo]}
+                onChange={handleChange}
+                className="form-control"
+                rows="3"
+              />
+            ) : (
+              <input
+                type={["precio", "stock", "anio", "km"].includes(campo) ? "number" : "text"}
+                name={campo}
+                value={nuevoCoche[campo]}
+                onChange={handleChange}
+                className="form-control"
+                required
+              />
+            )}
+          </div>
+        ))}
+        <button type="submit" className="btn btn-success">📤 Crear Coche</button>
       </form>
     </div>
   );
