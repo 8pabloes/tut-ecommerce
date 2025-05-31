@@ -57,10 +57,12 @@ function CocheCard({ coche }) {
     <div className="car-card">
       <div className="car-img-container">
         <img
-          src={`/coches/${coche.imagen}`}
-          alt={coche.modelo}
-          className="car-img"
-        />
+  src={`/${coche.imagen}`}
+  alt={coche.modelo}
+  className="car-img"
+/>
+
+
         <button
   className="car-fav"
   onClick={toggleFavorito}

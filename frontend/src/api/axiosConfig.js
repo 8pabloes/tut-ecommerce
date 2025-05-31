@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: "http://localhost:8080/api",
 });
 
-// Agrega el token a cada request si existe
+// 👉 Interceptor para añadir el token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -14,7 +14,18 @@ api.interceptors.request.use(
     }
     return config;
   },
+  (error) => Promise.reject(error)
+);
+
+// 🛡️ Interceptor para capturar errores de autenticación (token caducado, inválido, etc.)
+api.interceptors.response.use(
+  (response) => response,
   (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn("⏰ Token caducado o inválido. Cerrando sesión.");
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
