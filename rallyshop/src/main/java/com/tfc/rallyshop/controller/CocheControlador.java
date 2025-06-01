@@ -2,12 +2,17 @@ package com.tfc.rallyshop.controller;
 
 import com.tfc.rallyshop.entity.Coche;
 import com.tfc.rallyshop.service.CocheServicio;
+import com.tfc.rallyshop.service.CloudinaryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,9 +21,11 @@ import java.util.List;
 public class CocheControlador {
 
     private final CocheServicio servicio;
+    private final CloudinaryService cloudinaryService;
 
-    public CocheControlador(CocheServicio servicio) {
+    public CocheControlador(CocheServicio servicio, CloudinaryService cloudinaryService) {
         this.servicio = servicio;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @GetMapping
@@ -42,9 +49,34 @@ public class CocheControlador {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Coche> crear(@RequestBody Coche coche) {
-        return ResponseEntity.ok(servicio.guardar(coche));
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> crearConImagen(
+            @RequestParam("marca") String marca,
+            @RequestParam("modelo") String modelo,
+            @RequestParam("precio") double precio,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("stock") int stock,
+            @RequestParam("anio") int anio,
+            @RequestParam("km") int km,
+            @RequestParam("imagen") MultipartFile imagen
+    ) {
+        try {
+            String url = cloudinaryService.subirImagen(imagen);
+
+            Coche coche = new Coche();
+            coche.setMarca(marca);
+            coche.setModelo(modelo);
+            coche.setPrecio(precio);
+            coche.setDescripcion(descripcion);
+            coche.setStock(stock);
+            coche.setAnio(anio);
+            coche.setKm(km);
+            coche.setImagen(url);
+
+            return ResponseEntity.ok(servicio.guardar(coche));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("❌ Error al subir imagen");
+        }
     }
 
     @PutMapping("/{id}")

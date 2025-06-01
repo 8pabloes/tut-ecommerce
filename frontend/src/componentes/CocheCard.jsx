@@ -57,20 +57,21 @@ function CocheCard({ coche }) {
     <div className="car-card">
       <div className="car-img-container">
         <img
-  src={`/${coche.imagen}`}
-  alt={coche.modelo}
-  className="car-img"
-/>
-
-
+          src={
+            coche.imagen.startsWith("http")
+              ? coche.imagen
+              : `/imagenes/${coche.imagen}`
+          }
+          alt={coche.modelo}
+          className="car-img"
+        />
         <button
-  className="car-fav"
-  onClick={toggleFavorito}
-  title="Añadir a favoritos"
->
-  {esFavorito ? "❤️" : "🤍"}
-</button>
-
+          className="car-fav"
+          onClick={toggleFavorito}
+          title="Añadir a favoritos"
+        >
+          {esFavorito ? "❤️" : "🤍"}
+        </button>
       </div>
       <div className="car-details">
         <h3 className="car-title">
