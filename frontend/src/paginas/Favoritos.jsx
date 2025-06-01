@@ -59,7 +59,7 @@ function Favoritos() {
               <div className="car-card">
                 <div className="car-img-container">
                   <img
-                    src={`/coches/${coche.imagen}`}
+                    src={coche.imagen}
                     alt={coche.modelo}
                     className="car-img"
                     onClick={() => irADetalle(coche.id)}

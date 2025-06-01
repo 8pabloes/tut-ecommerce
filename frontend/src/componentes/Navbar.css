@@ -1,13 +1,11 @@
-.banner-container {
-  width: 100%;
-  overflow: hidden;
-}
+
 
 .banner-img {
   width: 100%;
   height: auto;
   display: block;
   object-fit: cover;
+    max-height: 500px;
 }
 
 
@@ -28,4 +26,45 @@
   font-family: 'Georgia', serif;
   text-shadow: 2px 2px 4px #000;
 }
+
+
+/* Mejoras en el navbar */
+.navbar-brand img {
+  border-radius: 10px;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.navbar .nav-link {
+  color: #f8f9fa !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #ffc107 !important;
+}
+
+.navbar .btn {
+  font-weight: 500;
+}
+
+.badge.bg-danger {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+}
+
+@media (max-width: 768px) {
+  .banner-img {
+    max-height: 200px;
+  }
+
+  .navbar-brand span {
+    font-size: 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+  }
+}
+
 

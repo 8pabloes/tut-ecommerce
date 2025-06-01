@@ -2,13 +2,13 @@
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  transition: transform 0.2s;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .car-card:hover {
-  transform: scale(1.01);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 .car-img-container {
@@ -26,16 +26,25 @@
 
 .car-fav {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   background: white;
   border: none;
   border-radius: 50%;
-  padding: 6px 10px;
+  width: 38px;
+  height: 38px;
   font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: color 0.2s;
-  color: #ccc;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.car-fav:hover {
+  transform: scale(1.15);
+  background: #f0f0f0;
 }
 
 .car-fav.activo {
@@ -43,22 +52,28 @@
 }
 
 .car-details {
-  padding: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .car-title {
-  font-size: 1.2rem;
-  margin: 0 0 4px 0;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1f2937;
 }
 
 .car-description {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 12px;
+  font-size: 0.92rem;
+  color: #4b5563;
+  line-height: 1.4;
+  min-height: 48px;
 }
 
 .car-bottom {
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,26 +82,31 @@
 .car-price {
   font-weight: bold;
   font-size: 1rem;
-  color: #333;
+  color: #111827;
 }
 
 .car-btn {
   background: #2563eb;
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
   font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
+}
+.car-fav {
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
+
 .car-btn:hover {
-  background: #1e40af;
+  background: #1d4ed8;
 }
 
 @media (max-width: 768px) {
   .car-card {
-    margin: 0 0 20px 0;
+    margin-bottom: 1.5rem;
   }
 }

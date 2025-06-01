@@ -66,7 +66,7 @@ function CocheCard({ coche }) {
           className="car-img"
         />
         <button
-          className="car-fav"
+          className={`car-fav ${esFavorito ? "activo" : ""}`}
           onClick={toggleFavorito}
           title="Añadir a favoritos"
         >
