@@ -32,12 +32,12 @@ E-commerce de coches de rally
 - Crea la base de datos `rallyshop`
 - Añade el archivo `application-secrets.properties` con tus claves de Stripe y Gmail
 - Ejecuta:
-  ```bash
+- cd rallyshop
   ./mvnw spring-boot:run
 ### 2. Frontend (React)
-cd frontend
-npm install
-npm run dev
+- cd frontend
+- npm install
+- npm run dev
 
 ### 3. Nota
 Si no configuras Stripe ni Gmail, la web funcionará igual (excepto pagos y envío de correos).
