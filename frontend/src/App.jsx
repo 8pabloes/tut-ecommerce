@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./componentes/Navbar";
+import Footer from "./componentes/Footer";
 import Coches from "./paginas/Coches";
 import Login from "./paginas/Login";
 import Registro from "./paginas/Registro";
@@ -20,23 +21,27 @@ function App() {
 
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Coches />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/favoritos" element={<Favoritos />} />
-        <Route path="/coches/:id" element={<CocheDetalle />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/carrito" element={<Carrito />} />
-        <Route path="/success" element={<Success />} />
-        <Route path="/cancel" element={<Cancel />} />
+      <div className="d-flex flex-column min-vh-100">
+        <Navbar />
 
-        {/* 🔒 Rutas solo accesibles si eres admin */}
-        <Route path="/admin" element={esAdmin ? <Admin /> : <Navigate to="/" />} />
-<Route path="/admin/nuevo" element={esAdmin ? <NuevoCoche /> : <Navigate to="/" />} />
+        <main className="flex-grow-1">
+          <Routes>
+            <Route path="/" element={<Coches />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/favoritos" element={<Favoritos />} />
+            <Route path="/coches/:id" element={<CocheDetalle />} />
+            <Route path="/registro" element={<Registro />} />
+            <Route path="/carrito" element={<Carrito />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/cancel" element={<Cancel />} />
+            <Route path="/admin" element={esAdmin ? <Admin /> : <Navigate to="/" />} />
+            <Route path="/admin/nuevo" element={esAdmin ? <NuevoCoche /> : <Navigate to="/" />} />
+            <Route path="/admin/editar/:id" element={esAdmin ? <EditarCoche /> : <Navigate to="/" />} />
+          </Routes>
+        </main>
 
-        <Route path="/admin/editar/:id" element={esAdmin ? <EditarCoche /> : <Navigate to="/" />} />
-      </Routes>
+        <Footer />
+      </div>
 
       <ToastContainer position="top-center" autoClose={2500} />
     </Router>

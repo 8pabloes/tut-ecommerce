@@ -19,7 +19,7 @@ function Registro() {
       const res = await api.post("/auth/registro", usuario);
 
       if (res.data === "Usuario registrado") {
-        toast.success("✅ Cuenta creada. Revisa tu correo 📩");
+        toast.success("✅ Cuenta creada. Revisa tu correo");
         navigate("/login");
       } else {
         setError(res.data);

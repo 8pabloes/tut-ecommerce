@@ -32,7 +32,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm px-4">
+      <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top shadow-sm px-4">
         <div className="container-fluid">
           <Link className="navbar-brand d-flex align-items-center" to="/">
             <img
@@ -95,8 +95,9 @@ function Navbar() {
         </div>
       </nav>
 
+      {/* Banner solo en home */}
       {location.pathname === "/" && (
-        <div className="banner-container">
+        <div className="banner-container mt-5 pt-4">
           <img src={banner} alt="Banner rally" className="banner-img" />
         </div>
       )}
