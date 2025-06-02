@@ -21,7 +21,7 @@ E-commerce de coches de rally
 
 ## Acceso admin
 
-- **Correo**: 8profesores@gmail.com  
+- **Correo**: profesores@gmail.com  
 - **Contraseña**: profesores
 
 ## Cómo ejecutar
