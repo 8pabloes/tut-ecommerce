@@ -10,6 +10,8 @@ import Favoritos from "./paginas/Favoritos";
 import Carrito from "./paginas/Carrito";
 import Success from "./paginas/Success";
 import Cancel from "./paginas/Cancel";
+import Acerca from "./paginas/Acerca";
+
 import Admin from "./paginas/Admin";
 import NuevoCoche from "./paginas/NuevoCoche";
 import EditarCoche from "./paginas/EditarCoche";
@@ -30,6 +32,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/favoritos" element={<Favoritos />} />
             <Route path="/coches/:id" element={<CocheDetalle />} />
+            <Route path="/acerca" element={<Acerca />} />
             <Route path="/registro" element={<Registro />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/success" element={<Success />} />

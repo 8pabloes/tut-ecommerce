@@ -23,14 +23,14 @@ function Carrito() {
       });
       setTimeout(() => {
         window.location.href = res.data;
-      }, 800); // da tiempo a ver el toast
+      }, 800);
     } catch (err) {
       toast.error("❌ Error al iniciar el pago del carrito");
     }
   };
 
   return (
-    <div className="catalogo-container">
+    <div className="catalogo-container mt-5 pt-4">
       <h2 className="mb-4 text-center">🛒 Tu cesta de compra</h2>
 
       <div className="row justify-content-center min-altura">

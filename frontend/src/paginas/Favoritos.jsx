@@ -43,15 +43,15 @@ function Favoritos() {
 
   if (!usuario) {
     return (
-      <div className="catalogo-container">
+      <div className="catalogo-container mt-5 pt-4">
         🔒 Inicia sesión para ver tus favoritos.
       </div>
     );
   }
 
   return (
-    <div className="catalogo-container">
-      <h2 className="mb-4">💖 Mis coches favoritos</h2>
+    <div className="catalogo-container mt-5 pt-4">
+      <h2 className="mb-4 text-center">💖 Mis coches favoritos</h2>
       <div className="row justify-content-center min-altura">
         {favoritos.length > 0 ? (
           favoritos.map((coche) => (
@@ -94,7 +94,7 @@ function Favoritos() {
             </div>
           ))
         ) : (
-          <p className="texto-vacio">
+          <p className="texto-vacio text-center">
             🚫 Aún no tienes coches guardados como favoritos.
           </p>
         )}

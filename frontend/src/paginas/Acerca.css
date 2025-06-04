@@ -1,0 +1,12 @@
+.acerca-container {
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 2rem;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+.contacto-box {
+  background-color: #ffffff;
+  border-left: 5px solid #2563eb;
+}

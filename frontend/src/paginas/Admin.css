@@ -1,16 +1,25 @@
+.admin-container {
+  min-height: 85vh;
+  padding-top: 6rem;  /* ✅ Espacio para navbar fijo */
+  padding-bottom: 3rem;
+}
+
 .admin-card {
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  transition: transform 0.2s ease;
-  background-color: #fff;
+  background-color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 .admin-img {
   height: 200px;
   object-fit: cover;
+  width: 100%;
 }

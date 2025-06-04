@@ -67,7 +67,9 @@ function Navbar() {
                         </span>
                       </Link>
                     )}
-                  </li>
+                  </li>         <li className="nav-item">
+  <Link className="nav-link" to="/acerca">ℹ️ Nosotros</Link>
+</li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/favoritos">💖 Favoritos</Link>
                   </li>
