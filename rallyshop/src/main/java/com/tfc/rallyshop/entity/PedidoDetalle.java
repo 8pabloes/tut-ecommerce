@@ -3,7 +3,6 @@ package com.tfc.rallyshop.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 @Entity
 @Table(name = "pedido_detalles")
 @Getter
@@ -11,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PedidoDetalle {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +22,7 @@ public class PedidoDetalle {
     @JoinColumn(name = "coche_id")
     private Coche coche;
 
-    @Column(name = "cantidad", nullable = false)
+    @Column(nullable = false)
     private int cantidad;
 
     @Column(name = "precio_unitario", nullable = false)
