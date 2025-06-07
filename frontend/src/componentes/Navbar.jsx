@@ -67,9 +67,10 @@ function Navbar() {
                         </span>
                       </Link>
                     )}
-                  </li>         <li className="nav-item">
-  <Link className="nav-link" to="/acerca">ℹ️ Nosotros</Link>
-</li>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/acerca">ℹ️ Nosotros</Link>
+                  </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/favoritos">💖 Favoritos</Link>
                   </li>
@@ -84,6 +85,9 @@ function Navbar() {
                 </>
               ) : (
                 <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/acerca">ℹ️ Nosotros</Link>
+                  </li>
                   <li className="nav-item">
                     <Link className="btn btn-primary btn-sm" to="/login">Iniciar sesión</Link>
                   </li>
